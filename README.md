@@ -155,6 +155,47 @@ conda activate bib
 python bibfmt.py format
 ```
 
+### Amade's setup
+
+This fork of the krr bibliography includes some changes to make the
+bibliography setup compatible with my bibliography management system
+in Emacs, based on the [[https://github.com/emacs-citar/citar][citar]]
+package. 
+
+Because the parser citar uses expects references to cross references
+and string definitions to be within the same bib file, I create the
+complete.bib file, which is a concatenation of procs.bib and
+krr.bib. We do not keep track of complete.bib in git as we consider it
+an artifact of krr.bib and procs.bib Two way syncing between
+complete.bib and procs.bib + krr.bib is handled by some custom
+interactive elisp functions `na/update-complete-bib` and
+`na/update-krr-procs-bib`.
+
+My workflow for maintaining this fork and contributing back is defined
+below:
+
+#### Pulling in changes from krr-up
+
+Additional changes made, such as adding additional entries etc. in the fork
+should be rebased on top of the master branch of
+krr-up/bibliograpy. To this end, `branch.amade.rebase` is set to
+`true` in the local git config.
+
+After such a pull happens, complete.bib should be updated with the new
+changes by calling the elisp function `na/update-complete-bib`.
+
+#### Adding new commits and contributing back to krr-up
+
+When adding new entries, there should be a separate commit for each
+new entry in krr.bib and/or procs.bib.
+
+If we want to contribute back an entry, we can then first need to
+interactively rebase the associated commit to be just after the tip of
+krr-up/master. We then create a new branch at the commit by using the
+command `git branch branch_name <commit-hash>`, or by putting point on
+the desired ref and pressing `b n`. After pushing, the pull request
+can be opened from this branch.
+
 [krr.bib]: krr.bib
 [procs.bib]: procs.bib
 [bibfmt]: bibfmt.py
